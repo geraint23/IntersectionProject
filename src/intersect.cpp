@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <vector>
 #include <fstream>
+#include<iomanip>
 #include "Circle.h"
 
 using namespace std;
@@ -19,10 +20,10 @@ int main(int argc, char* argv[]) {
 	int N;
 	for (int i = 0; i <= argc - 1; i++) {
 		if (strcmp(argv[i], "-i") == 0) {
-			in = ifstream(argv[i + 1]);
+			in.open(argv[i + 1]);
 		}
 		else if (strcmp(argv[i], "-o") == 0) {
-			out = ofstream(argv[i + 1]);
+			out.open(argv[i + 1]);
 		}
 	}
 	in >> N;
@@ -57,10 +58,7 @@ int main(int argc, char* argv[]) {
 	}*/
 	for (N = 0; N <= lineSize - 2; N++) {
 		for (int i = N + 1; i <= lineSize - 1; i++) {
-			node = lines[N].intersect_L(lines[i]);
-			if (node != "not_exist") {
-				nodes.insert(node);
-			}
+			lines[N].intersect_L(lines[i]);
 		}
 	}
 	for (N = 0; N <= circleSize - 2; N++) {
@@ -73,8 +71,9 @@ int main(int argc, char* argv[]) {
 			circles[N].intersect_L(lines[i]);
 		}
 	}
-	/*for (auto it : nodes) {
-		cout << it << endl;
+	/*cout << "All nodes:" << endl;
+	for (auto it : nodes) {
+		cout << it.x << "," << it.y << endl;
 	}*/
 	out << nodes.size() << endl;
 	in.close();

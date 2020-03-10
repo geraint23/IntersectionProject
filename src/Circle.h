@@ -7,8 +7,6 @@
 
 using namespace std;
 
-unordered_set<string> nodes;
-
 class Circle {
 public:
 	double x;	// Ô²ÐÄx×ø±ê
@@ -21,10 +19,6 @@ public:
 		this->r = r;
 	}
 
-	double trans(double ans) {
-		return abs(ans) < 1e-10 ? 0.0 : ans;
-	}
-
 	void intersect_C(Circle otherCircle) {
 		double center_d = sqrt((x - otherCircle.x) * (x - otherCircle.x)
 			+ (y - otherCircle.y) * (y - otherCircle.y));
@@ -33,7 +27,8 @@ public:
 			double x0 = x + a / center_d * (otherCircle.x - x);
 			double y0 = y + a / center_d * (otherCircle.y - y);
 			if ((center_d == r + otherCircle.r) || (center_d == abs(r - otherCircle.r))) {
-				nodes.insert(to_string(trans(x0)) + "," + to_string(trans(y0)));
+				nodes.insert(Point(trans(x0), trans(y0)));
+				/*cout << x0 << "," << y0 << endl;*/
 			}
 			else if ((center_d > abs(r - otherCircle.r)) && (center_d < r + otherCircle.r)) {
 				double h = sqrt(r * r - a * a);
@@ -41,8 +36,10 @@ public:
 				double y1 = y0 + h / center_d * (otherCircle.x - x);
 				double x2 = x0 + h / center_d * (otherCircle.y - y);
 				double y2 = y0 - h / center_d * (otherCircle.x - x);
-				nodes.insert(to_string(trans(x1)) + "," + to_string(trans(y1)));
-				nodes.insert(to_string(trans(x2)) + "," + to_string(trans(y2)));
+				nodes.insert(Point(trans(x1), trans(y1)));
+				nodes.insert(Point(trans(x2), trans(y2)));
+				/*cout << x1 << "," << y1 << endl;
+				cout << x2 << "," << y2 << endl;*/
 			}
 		}
 	}
@@ -54,11 +51,14 @@ public:
 				double offset = sqrt(r * r - d * d);
 				double y1 = y + offset;
 				double y2 = y - offset;
-				nodes.insert(to_string(line.b) + "," + to_string(trans(y1)));
-				nodes.insert(to_string(line.b) + "," + to_string(trans(y2)));
+				nodes.insert(Point(line.b, trans(y1)));
+				nodes.insert(Point(line.b, trans(y2)));
+				/*cout << line.b << "," << y1 << endl;
+				cout << line.b << "," << y2 << endl;*/
 			}
 			else if (d == r) {
-				nodes.insert(to_string(line.b) + "," + to_string(y));
+				nodes.insert(Point(line.b, y));
+				/*cout << line.b << "," << y << endl;*/
 			}
 		}
 		else {
@@ -71,13 +71,16 @@ public:
 				double y1 = -((k * delta + k * c + d * k * k - b) / (k * k + 1));
 				double x2 = (delta - k * d - k * b - c) / (k * k + 1);
 				double y2 = -((-k * delta + k * c + d * k * k - b) / (k * k + 1));
-				nodes.insert(to_string(trans(x1)) + "," + to_string(trans(y1)));
-				nodes.insert(to_string(trans(x2)) + "," + to_string(trans(y2)));
+				nodes.insert(Point(trans(x1), trans(y1)));
+				nodes.insert(Point(trans(x2), trans(y2)));
+				//cout << x1 << "," << y1 << endl;
+				//cout << x2 << "," << y2 << endl;
 			}
 			else if (delta == 0) {
 				double x1 = (-k * d - k * b - c) / (k * k + 1);
 				double y1 = (b - d * k * k - k * c) / (k * k + 1);
-				nodes.insert(to_string(trans(x1)) + "," + to_string(trans(y1)));
+				nodes.insert(Point(trans(x1), trans(y1)));
+				/*cout << x1 << "," << y1 << endl;*/
 			}
 		}
 	}

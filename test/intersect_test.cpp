@@ -33,10 +33,7 @@ int main() {
 	int circleSize = circles.size();
 	for (N = 0; N <= lineSize - 2; N++) {
 		for (int i = N + 1; i <= lineSize - 1; i++) {
-			node = lines[N].intersect_L(lines[i]);
-			if (node != "not_exist") {
-				nodes.insert(node);
-			}
+			lines[N].intersect_L(lines[i]);
 		}
 	}
 	for (N = 0; N <= circleSize - 2; N++) {

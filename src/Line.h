@@ -1,8 +1,12 @@
 #pragma once
-#include <string>
 #include <iostream>
+#include <cmath>
+#include <set>
+#include "Point.h"
 
 using namespace std;
+
+set<Point> nodes;
 
 class Line {
 public:
@@ -20,27 +24,23 @@ public:
 		}
 	}
 
-	double trans(double ans) {
-		return abs(ans) < 1e-10 ? 0.0 : ans;
-	}
-
-	string intersect_L(Line otherLine) {
+	void intersect_L(Line otherLine) {
 		double x, y;
-		if (k == otherLine.k) {
-			return "not_exist";
+		if (k != otherLine.k) {
+			if (k == INFINITY) {
+				x = b;
+				y = otherLine.k * x + otherLine.b;
+			}
+			else if (otherLine.k == INFINITY) {
+				x = otherLine.b;
+				y = k * x + b;
+			}
+			else {
+				x = (otherLine.b - b) / (k - otherLine.k);
+				y = k * x + b;
+			}
+			nodes.insert(Point(trans(x), (y)));
+			/*cout << x << "," << y << endl;*/
 		}
-		else if (k == INFINITY) {
-			x = b;
-			y = otherLine.k * x + otherLine.b;
-		}
-		else if (otherLine.k == INFINITY) {
-			x = otherLine.b;
-			y = k * x + b;
-		}
-		else {
-			x = (otherLine.b - b) / (k - otherLine.k);
-			y = k * x + b;
-		}
-		return to_string(trans(x)) + "," + to_string(trans(y));
 	}
 };
